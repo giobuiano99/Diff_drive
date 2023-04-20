@@ -117,7 +117,27 @@
       <joint_properties damping="0.5" friction="0.01"/>
     </joint>
 
-  
+    <transmission name="left_wheel_tran">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="left_wheel_joint">
+	<hardwareInterface>EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="left_wheel_motor">
+	<hardwareInterface>EffortJointInterface</hardwareInterface>
+	<mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="right_wheel_tran">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="right_wheel_joint">
+	<hardwareInterface>EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="right_wheel_motor">
+	<hardwareInterface>EffortJointInterface</hardwareInterface>
+	<mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
 
      <gazebo reference="base_link">
       <material>Gazebo/White</material>
