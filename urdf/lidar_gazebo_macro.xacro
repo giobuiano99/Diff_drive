@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="lidar_gazebo_macro" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!--xacro:include filename="$(find mr_description)/urdf/utility_macro.xacro" /-->
+  <!--xacro:include filename="$(find kvaradrive)/urdf/utility_macro.xacro" /-->
   
   <xacro:macro name="lidar_gazebo_sensor" params="parent" > 
     <link name="laser_frame">
@@ -12,7 +12,7 @@
       </inertial>    
       <visual> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/lidar.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/lidar.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <material name="White"/>
         <origin rpy="0 0 ${-M_PI_2}" xyz="0.0 0.0 -0.031"/>

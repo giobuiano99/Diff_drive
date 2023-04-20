@@ -1,4 +1,4 @@
-# mr_description
+# kvaradrive
 
 Description package for the mobile robot used in the __Robotics Lab__ course from University of Naples Federico II. 
 

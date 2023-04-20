@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="mr_base_macro" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find mr_description)/urdf/utility_macro.xacro" />
+  <xacro:include filename="$(find kvaradrive)/urdf/utility_macro.xacro" />
  
 
   <!-- Base properties -->
@@ -27,7 +27,7 @@
       </inertial>    
       <visual> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/mr_body.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/mr_body.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <material name="White"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -49,14 +49,14 @@
     <link name="left_wheel_link">
       <visual> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <material name="Black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
       <collision> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
@@ -72,14 +72,14 @@
     <link name="right_wheel_link">
       <visual> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <material name="Black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
       <collision> 
         <geometry>
-          <mesh filename="package://mr_description/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
+          <mesh filename="package://kvaradrive/meshes/mr_wheel.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
