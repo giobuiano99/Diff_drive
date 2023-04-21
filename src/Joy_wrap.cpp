@@ -11,9 +11,11 @@ class JOY_WRAP {
 		void cb(sensor_msgs::Joy::ConstPtr msg);
 		void publish();
 	private:
-		float _rescaleValue;
+		float _rescaleValueHead;
+		float _rescaleValueTurn;
 		float _headingVel;
 		float _turningVel;
+		bool _topicActive;
 		ros::NodeHandle _nh;
 		ros::Subscriber _topic_sub;
 		ros::Publisher _topic_pub;
@@ -21,7 +23,8 @@ class JOY_WRAP {
 };
 
 JOY_WRAP::JOY_WRAP(): _rate(100) {
-	_rescaleValue = 1;
+	_rescaleValueHead = 1;
+	_rescaleValueTurn = 1;
 	_headingVel = 0;
 	_turningVel = 0;
 	_topic_sub = _nh.subscribe("/joy", 1, &JOY_WRAP::cb, this);
@@ -31,6 +34,7 @@ JOY_WRAP::JOY_WRAP(): _rate(100) {
 
 //Callback function: the input of the function is the data to read
 void JOY_WRAP::cb(sensor_msgs::Joy::ConstPtr msg) {
+	if(!_topicActive){_topicActive = true};
 	_turningVel = msg->axes[0];
 	_headingVel = msg->axes[1];
 	ROS_INFO("I heard: headingVel = %f, turningVel = %f\n", _headingVel, _turningVel);
@@ -43,12 +47,12 @@ void JOY_WRAP::publish() {
 	f.angular.x = 0;
 	f.angular.y = 0;
 	while (ros::ok()) {
-		f.linear.x = _headingVel*_rescaleValue;
-		f.angular.z = _turningVel*_rescaleValue;
-		_topic_pub.publish(f);
+		f.linear.x = _headingVel*_rescaleValueHead;
+		f.angular.z = _turningVel*_rescaleValueTurn;
+		if(_topicActive) {_topic_pub.publish(f);}
 		_rate.sleep();
 	}
-	
+
 }
 
 int main( int argc, char** argv ) {
