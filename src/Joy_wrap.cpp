@@ -34,7 +34,7 @@ JOY_WRAP::JOY_WRAP(): _rate(100) {
 
 //Callback function: the input of the function is the data to read
 void JOY_WRAP::cb(sensor_msgs::Joy::ConstPtr msg) {
-	if(!_topicActive){_topicActive = true};
+	if(!_topicActive){_topicActive = true;}
 	_turningVel = msg->axes[0];
 	_headingVel = msg->axes[1];
 	ROS_INFO("I heard: headingVel = %f, turningVel = %f\n", _headingVel, _turningVel);
