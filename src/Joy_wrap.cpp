@@ -27,6 +27,7 @@ JOY_WRAP::JOY_WRAP(): _rate(100) {
 	_rescaleValueTurn = 1;
 	_headingVel = 0;
 	_turningVel = 0;
+	_topicActive = false;
 	_topic_sub = _nh.subscribe("/joy", 1, &JOY_WRAP::cb, this);
 	_topic_pub = _nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 	boost::thread(&JOY_WRAP::publish, this);
