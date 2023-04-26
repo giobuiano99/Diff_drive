@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot name="lidar_gazebo_macro" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!--xacro:include filename="$(find kvaradrive)/urdf/utility_macro.xacro" /-->
+ 
+  
   
   <xacro:macro name="lidar_gazebo_sensor" params="parent" > 
     <link name="laser_frame">
@@ -36,7 +37,7 @@
     <gazebo reference="laser_frame">
       <sensor type="ray" name="head_hokuyo_sensor">
         <pose>0 0 0 0 0 0</pose>
-        <visualize>false</visualize>
+        <visualize>true</visualize>
         <update_rate>40</update_rate>
         <ray>
             <scan>

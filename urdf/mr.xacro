@@ -2,7 +2,8 @@
 
 <robot name="mobile_robot" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find kvaradrive)/urdf/mr_base_macro.xacro" />
-
+  <xacro:include filename="$(find kvaradrive)/urdf/lidar_gazebo_macro.xacro" />
   <!-- Diff Drive Robot Base  -->
   <xacro:mr_base />
+  <xacro:lidar_gazebo_sensor parent="base_link" />
 </robot>

@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot name="mr_base_macro" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--<xacro:include filename="$(find kvaradrive)/urdf/utility_macro.xacro" />-->
   <xacro:include filename="$(find kvaradrive)/urdf/utility_macro.xacro" />
- 
+  
 
   <!-- Base properties -->
 	<xacro:property name="base_height" value="0.180" /> 
@@ -14,6 +15,7 @@
   <!-- WHOLE BASE MACRO-->
   <xacro:macro name="mr_base" > <!--fb : front, back ; lr: left, right -->
    
+    
     <!--Actual body/chassis of the robot-->
     <link name="base_footprint">
     </link>
