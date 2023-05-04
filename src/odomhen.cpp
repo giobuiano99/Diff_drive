@@ -64,7 +64,7 @@ float T = 1.0/(float)_freq;
 		q.setRPY(0, 0, _theta);
 		_trans.setRotation(q);
 
-		_trans_br.sendTransform(tf::StampedTransform(_trans,ros::Time::now(), "/odomhen", "base_link"));
+		_trans_br.sendTransform(tf::StampedTransform(_trans,ros::Time::now(), "odomhen", "base_link"));
 
 		_rate.sleep();
 	}
