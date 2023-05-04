@@ -3,6 +3,11 @@
 #include "geometry_msgs/PoseWithCovariance.h"
 #include "nav_msgs/Odometry.h"
 #include "boost/thread.hpp"
+#include "tf/transform_broadcaster.h"
+
+
+#define _freq 100
+
 
 using namespace std;
 
@@ -18,43 +23,49 @@ class ODOMHEN {
 		float _headingVel;
 		float _turningVel;
 		bool _topicActive;
+		tf::Transform _trans;
+		tf::TransformBroadcaster _trans_br;
 		ros::NodeHandle _nh;
 		ros::Subscriber _topic_sub;
-		ros::Publisher _topic_pub;
 		ros::Rate _rate;
+
 };
 
-ODOMHEN::ODOMHEN(): _rate(100) {
+ODOMHEN::ODOMHEN(): _rate(_freq) {
 	_x = 0;
 	_y = 0;
 	_theta = 0;
 	_headingVel = 0;
 	_turningVel = 0;
 	_topicActive = false;
-	_topic_sub = _nh.subscribe("/kvaraspace/cmd_vel", 1, &ODOMHEN::cb, this);
-	_topic_pub = _nh.advertise<nav_msgs::Odometry>("/odom", 1);
+	_topic_sub = _nh.subscribe("/cmd_vel", 1, &ODOMHEN::cb, this);
 	boost::thread(&ODOMHEN::odom, this);
 }
 
 //Callback function: the input of the function is the data to read
-void cb(geometry_msgs::Twist::ConstPtr msg) {
-	if(!_topicActive){_topicActive = true;}
+void ODOMHEN::cb(geometry_msgs::Twist::ConstPtr msg) {
 	_turningVel = msg->angular.z;
 	_headingVel = msg->linear.x;
 	ROS_INFO("I heard: headingVel = %f, turningVel = %f", _headingVel, _turningVel);
 }
 
 void ODOMHEN::odom() {
-	geometry_msgs::TwistWithCovariance twist;
-	geometry_msgs::PoseWithCovariance pose;
-	string child_frame_id = "base_link";
-	twist.x = 0;
-	twist.y = 0;
-	twist
+
+float T = 1.0/(float)_freq;
+
 	while (ros::ok()) {
-		f.linear.x = _headingVel*_rescaleValueHead;
-		f.angular.z = _turningVel*_rescaleValueTurn;
-		if(_topicActive) {_topic_pub.publish(f);}
+
+		_x = _x + _headingVel* T* cos(_theta +0.5* _turningVel*T);
+		_y = _y + _headingVel* T* sin(_theta +0.5* _turningVel*T);
+		_theta = _theta + _turningVel*T;
+
+		_trans.setOrigin(tf::Vector3(_x, _y, 0));
+		tf::Quaternion q;
+		q.setRPY(0, 0, _theta);
+		_trans.setRotation(q);
+
+		_trans_br.sendTransform(tf::StampedTransform(_trans,ros::Time::now(), "/odomhen", "base_link"));
+
 		_rate.sleep();
 	}
 
@@ -63,10 +74,10 @@ void ODOMHEN::odom() {
 int main( int argc, char** argv ) {
 
 	//Init the ros node with ros_subscriber name
-	ros::init(argc, argv, "Joy_wrap");
+	ros::init(argc, argv, "Odomhen");
 
 	//Create the ROS_SUB class object
-	JOY_WRAP wrap;
+	ODOMHEN odomhen;
 
 	ros::spin();
 

@@ -142,6 +142,9 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/rl_fratomo_description_node.cpp)
 
 add_executable(Joy_wrap src/Joy_wrap.cpp)
+add_executable(Odomhen src/odomhen.cpp)
+
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -159,6 +162,9 @@ add_executable(Joy_wrap src/Joy_wrap.cpp)
 # )
 
 target_link_libraries(Joy_wrap
+   ${catkin_LIBRARIES}
+)
+target_link_libraries(Odomhen
    ${catkin_LIBRARIES}
 )
 
