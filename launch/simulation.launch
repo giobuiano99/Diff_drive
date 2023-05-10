@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 
 <launch>
+	<!-- Copied from: display_mr.launch -->
 	<arg name="model" />						
 	<param name="robot_description" command="$(find xacro)/xacro $(find kvaradrive)/urdf/mr.xacro" />
 
@@ -8,35 +9,36 @@
 	<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />	
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find kvaradrive)/conf/mr_conf.rviz" required="true" />
 	
+	<!-- Copied from: spawn_kvaradrive.launch -->
+  	<!-- these are the arguments you can pass this launch file, for example paused:=true -->
+	<arg name="paused" default="false"/>
+	<arg name="use_sim_time" default="true"/>
+	<arg name="gui" default="true"/>
+	<arg name="headless" default="false"/>
+	<arg name="debug" default="false"/>
 
-  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
-  <arg name="paused" default="false"/>
-  <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
+	<env name="GAZEBO_MODEL_PATH" value="$(find gazebo_launch_example)/models:$(optenv GAZEBO_MODEL_PATH)" />
 
-  <env name="GAZEBO_MODEL_PATH" value="$(find gazebo_launch_example)/models:$(optenv GAZEBO_MODEL_PATH)" />
-
-  <!-- We resume the logic in empty_world.launch -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find gazebo_launch_example)/worlds/walls.world"/>
-    <arg name="debug" value="$(arg debug)" />
-    <arg name="gui" value="$(arg gui)" />
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-    <arg name="headless" value="$(arg headless)"/>
-  </include>
+	<!-- We resume the logic in empty_world.launch -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find gazebo_launch_example)/worlds/walls.world"/>
+		<arg name="debug" value="$(arg debug)" />
+		<arg name="gui" value="$(arg gui)" />
+		<arg name="paused" value="$(arg paused)"/>
+		<arg name="use_sim_time" value="$(arg use_sim_time)"/>
+		<arg name="headless" value="$(arg headless)"/>
+ 	</include>
 
 
-<!-- urdf xml robot description loaded on the Parameter Server-->  
+	<!-- urdf xml robot description loaded on the Parameter Server-->  
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/mr.xacro'" /> 
+  	<param name="robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/mr.xacro'" /> 
 
-  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-	args="-urdf -model diff_wheeled_robot -param robot_description"/> 
+	<!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-urdf -model diff_wheeled_robot -param robot_description"/> 
 
+	<!-- Copied from: gmapping.launch -->
 	<arg name="scan_topic" default="/laser/scan" />
 	<!-- Defining parameters for slam_gmapping node -->
 	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
@@ -82,17 +84,19 @@
 	
 	</node>
 	
-  <arg name="odom_topic" default="odom" />
+	<!-- Copied from: move_base.launch -->
+	<arg name="odom_topic" default="odom" />
 
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find kvaradrive)/param/move_base_params.yaml" command="load" />
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load" />
+		<rosparam file="$(find kvaradrive)/param/move_base_params.yaml" command="load" />
 
-  </node>
+  	</node>
   
-  <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering" />
+  	<!-- Added to launch rqt_robot_steering -->
+	<node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering" />
 
 </launch>
