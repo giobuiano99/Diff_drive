@@ -4,7 +4,8 @@
 	<!-- Copied from: display_mr.launch -->
 	<arg name="model" />						
 	<param name="robot_description" command="$(find xacro)/xacro $(find kvaradrive)/urdf/mr.xacro" />
-
+	
+	
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 	<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />	
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find kvaradrive)/conf/mr_conf.rviz" required="true" />
@@ -31,12 +32,21 @@
 
 
 	<!-- urdf xml robot description loaded on the Parameter Server-->  
-
-  	<param name="robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/mr.xacro'" /> 
-
+	
+  	  <param name="robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/mr.xacro'" /> 
+  	  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-urdf -model diff_wheeled_robot -param robot_description"/>
+	
+  	
+  	
+  	  <param name="second_robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/ar_mark.urdf'" /> 
+  	  <node name="urdf_spawner2" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-urdf -model ar_mark -param second_robot_description"/>
+	
+  	
+  
 	<!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-		args="-urdf -model diff_wheeled_robot -param robot_description"/> 
+ 
 
 	<!-- Copied from: gmapping.launch -->
 	<arg name="scan_topic" default="/laser/scan" />
