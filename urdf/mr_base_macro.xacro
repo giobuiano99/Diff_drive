@@ -209,7 +209,7 @@
     </gazebo>
     
     <!--Camera sensor -->
- <link name="camera_frame">
+ <link name="camera_link">
       <inertial>
           <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
         <mass value="0.1" />
@@ -233,12 +233,12 @@
 
     <joint name="camera_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="camera_frame"/>
-      <origin rpy="0 0 0" xyz="0.11 0.0 -0.01"/>
+      <child link="camera_link"/>
+      <origin rpy="${M_PI} 0 0" xyz="0.11 0.0 -0.01"/>
       <!-- <origin rpy="0 0 0" xyz="0.12 0.0 -0.01"/>  -->
     </joint>    
     
-    <gazebo reference="camera_frame">
+    <gazebo reference="camera_link">
     <sensor type="camera" name="camera1">
       <update_rate>30.0</update_rate>
       <camera name="head">
@@ -264,7 +264,7 @@
         <cameraName>/camera</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_frame</frameName>
+        <frameName>camera_link</frameName>
         <hackBaseline>0.07</hackBaseline>
         <distortionK1>0.0</distortionK1>
         <distortionK2>0.0</distortionK2>
