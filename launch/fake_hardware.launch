@@ -80,43 +80,24 @@
     <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
   </node>
     
-  <!-- Copied from: dynamixel_controllers.launch -->
-  <arg name="usb_port"                default="/dev/ttyUSB0"/>
-  <arg name="dxl_baud_rate"           default="1000000"/>
-  <arg name="namespace"               default="kvaraspace"/>
+  <!-- Copied from: single.launch -->
+  <arg name="markerId"        default="9"/>
+  <arg name="markerSize"      default="0.05"/>    <!-- in m -->
+  <arg name="eye"             default="usb_cam"/>
+  <arg name="marker_frame"    default="aruco_marker_frame"/>
+  <arg name="ref_frame"       default="camera_frame"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+  <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
 
-  <arg name="use_moveit"              default="false"/>
-  <arg name="use_joint_state"         default="false"/>
-  <arg name="use_cmd_vel"             default="true"/>
-
-  <param name="dynamixel_info"          value="$(find dynamixel_workbench_controllers)/config/wheel_1_0.yaml"/>
-
-  <node name="$(arg namespace)" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers"
-    required="true" output="screen" args="$(arg usb_port) $(arg dxl_baud_rate)">
-    <param name="use_moveit"              value="$(arg use_moveit)"/>
-    <param name="use_joint_states_topic"  value="$(arg use_joint_state)"/>
-    <param name="use_cmd_vel_topic"       value="$(arg use_cmd_vel)"/>
-    <rosparam>
-      publish_period: 0.010
-      dxl_read_period: 0.010
-      dxl_write_period: 0.010
-      mobile_robot_config:                <!--this values will be set when 'use_cmd_vel' is true-->
-        seperation_between_wheels: 0.13  <!--default value is set by reference of TB3-->
-        radius_of_wheel: 0.035            <!--default value is set by reference of TB3-->
-    </rosparam>
+  <node pkg="aruco_ros" type="single" name="aruco_single">
+    <remap from="/camera_info" to="/$(arg eye)/camera_info"/>
+    <remap from="/image" to="/$(arg eye)/image_raw"/>
+    <param name="image_is_rectified" value="True"/>
+    <param name="marker_size"        value="$(arg markerSize)"/>
+    <param name="marker_id"          value="$(arg markerId)"/>
+    <param name="reference_frame"    value="$(arg ref_frame)"/>   <!-- frame in which the marker pose will be refered -->
+    <param name="camera_frame"       value="camera_frame"/>
+    <param name="marker_frame"       value="$(arg marker_frame)" />
+    <param name="corner_refinement"  value="$(arg corner_refinement)" />
   </node>
-    
-  <!-- Copied from: usb_cam.launch -->
-  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
-    <param name="video_device" value="/dev/video2"/>
-    <param name="image_width" value="640"/>
-    <param name="image_height" value="480"/>
-    <param name="pixel_format" value="yuyv"/>
-    <param name="color_format" value="yuv422p"/>
-    <param name="camera_frame_id" value="usb_cam"/>
-    <param name="io_method" value="mmap"/>
-  </node>    
-  
-  <node pkg="tf" type="static_transform_publisher" name="new_camera_frame" args="0 0 0 -1.57 0 -1.57 camera_link camera_frame 10"/>
   
 </launch>
