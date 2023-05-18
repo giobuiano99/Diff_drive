@@ -1,109 +1,120 @@
 <?xml version="1.0" ?>
 
 <launch>
-	<!-- Copied from: display_mr.launch -->
-	<arg name="model" />						
-	<param name="robot_description" command="$(find xacro)/xacro $(find kvaradrive)/urdf/mr.xacro" />
+  <!-- Copied from: display_mr.launch -->
+  <arg name="model" />            
+  <param name="robot_description" command="$(find xacro)/xacro $(find kvaradrive)/urdf/mr.xacro"/>
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-	<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />	
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find kvaradrive)/conf/mr_conf.rviz" required="true" />
-	
-	<!-- Copied from: gmapping.launch -->
-	<arg name="scan_topic" default="/laser/scan" />
-	<!-- Defining parameters for slam_gmapping node -->
-	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-		<param name="base_frame" value="base_link"/>
-		<param name="odom_frame" value="odomhen"/>
-		<param name="map_update_interval" value="5.0"/>
-		<param name="maxUrange" value="6.0"/>
-		<param name="maxRange" value="8.0"/>
-		<param name="sigma" value="0.05"/>
-		<param name="kernelSize" value="1"/>
-		<param name="lstep" value="0.05"/>
-		<param name="astep" value="0.05"/>
-		<param name="iterations" value="5"/>
-		<param name="lsigma" value="0.075"/>
-		<param name="ogain" value="3.0"/>
-		<param name="lskip" value="0"/>
-		<param name="minimumScore" value="100"/>
-		<param name="srr" value="0.01"/>
-		<param name="srt" value="0.02"/>
-		<param name="str" value="0.01"/>
-		<param name="stt" value="0.02"/>
-		<param name="linearUpdate" value="0.5"/>
-		<param name="angularUpdate" value="0.436"/>
-		<param name="temporalUpdate" value="-1.0"/>
-		<param name="resampleThreshold" value="0.5"/>
-		<param name="particles" value="80"/>
-		<param name="xmin" value="-1.0"/>
-		<param name="ymin" value="-1.0"/>
-		<param name="xmax" value="1.0"/>
-		<param name="ymax" value="1.0"/>
-		<param name="delta" value="0.05"/>
-		<param name="llsamplerange" value="0.01"/>
-
-		<param name="llsamplestep" value="0.01"/>
-		<param name="lasamplerange" value="0.005"/>
-		<param name="lasamplestep" value="0.005"/>
-		
-		<!--
-			from="scan": original name of the topic
-			to = desired name for this topic
-		-->
-		<remap from="scan" to="$(arg scan_topic)"/>
-	
-	</node>
-	
-	<!-- Copied from: move_base.launch -->
-	<arg name="odom_topic" default="odomhen" />
-
-	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-		<rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-		<rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load" />
-		<rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load" />
-		<rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load" />
-		<rosparam file="$(find kvaradrive)/param/move_base_params.yaml" command="load" />
-
-  	</node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>  
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kvaradrive)/conf/mr_conf.rviz" required="true"/>
   
-  	<!-- Added to launch joy_node -->  
-    <node name="joy_node" pkg="joy" type="joy_node" />
+  <!-- Copied from: gmapping.launch -->
+  <arg name="scan_topic" default="/laser/scan" />
+  <!-- Defining parameters for slam_gmapping node -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <param name="base_frame" value="base_link"/>
+    <param name="odom_frame" value="odomhen"/>
+    <param name="map_update_interval" value="5.0"/>
+    <param name="maxUrange" value="6.0"/>
+    <param name="maxRange" value="8.0"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.075"/>
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+    <param name="minimumScore" value="100"/>
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+    <param name="linearUpdate" value="0.5"/>
+    <param name="angularUpdate" value="0.436"/>
+    <param name="temporalUpdate" value="-1.0"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="80"/>
+    <param name="xmin" value="-1.0"/>
+    <param name="ymin" value="-1.0"/>
+    <param name="xmax" value="1.0"/>
+    <param name="ymax" value="1.0"/>
+    <param name="delta" value="0.05"/>
+    <param name="llsamplerange" value="0.01"/>
+
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
     
-	<!-- Added to launch Joy_wrap -->  
-    <node name="Joy_wrap" pkg="kvaradrive" type="Joy_wrap">
-    	<remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
-    </node>
+    <!--
+      from="scan": original name of the topic
+      to = desired name for this topic
+    -->
+    <remap from="scan" to="$(arg scan_topic)"/>
+  
+  </node>
+  
+  <!-- Copied from: move_base.launch -->
+  <arg name="odom_topic" default="odomhen"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load"/>
+    <rosparam file="$(find kvaradrive)/param/move_base_params.yaml" command="load"/>
+
+  </node>
+  
+  <!-- Added to launch joy_node -->  
+  <node name="joy_node" pkg="joy" type="joy_node" />
     
-	<!-- Added to launch Odomhen -->  
-    <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
-    	<remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
-    </node>
+  <!-- Added to launch Joy_wrap -->  
+  <node name="Joy_wrap" pkg="kvaradrive" type="Joy_wrap">
+    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
+  </node>
     
-	<!-- Copied from: dynamixel_controllers.launch -->
-	<arg name="usb_port"                default="/dev/ttyUSB0"/>
-	<arg name="dxl_baud_rate"           default="1000000"/>
-	<arg name="namespace"               default="kvaraspace"/>
+  <!-- Added to launch Odomhen -->  
+  <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
+    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
+  </node>
+    
+  <!-- Copied from: dynamixel_controllers.launch -->
+  <arg name="usb_port"                default="/dev/ttyUSB0"/>
+  <arg name="dxl_baud_rate"           default="1000000"/>
+  <arg name="namespace"               default="kvaraspace"/>
 
-	<arg name="use_moveit"              default="false"/>
-	<arg name="use_joint_state"         default="false"/>
-	<arg name="use_cmd_vel"             default="true"/>
+  <arg name="use_moveit"              default="false"/>
+  <arg name="use_joint_state"         default="false"/>
+  <arg name="use_cmd_vel"             default="true"/>
 
-	<param name="dynamixel_info"          value="$(find dynamixel_workbench_controllers)/config/wheel_1_0.yaml"/>
+  <param name="dynamixel_info"          value="$(find dynamixel_workbench_controllers)/config/wheel_1_0.yaml"/>
 
-	<node name="$(arg namespace)" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers"
-			required="true" output="screen" args="$(arg usb_port) $(arg dxl_baud_rate)">
-		<param name="use_moveit"              value="$(arg use_moveit)"/>
-		<param name="use_joint_states_topic"  value="$(arg use_joint_state)"/>
-		<param name="use_cmd_vel_topic"       value="$(arg use_cmd_vel)"/>
-		<rosparam>
-			publish_period: 0.010
-			dxl_read_period: 0.010
-			dxl_write_period: 0.010
-			mobile_robot_config:                <!--this values will be set when 'use_cmd_vel' is true-->
-			seperation_between_wheels: 0.13  <!--default value is set by reference of TB3-->
-			radius_of_wheel: 0.035            <!--default value is set by reference of TB3-->
-		</rosparam>
-  	</node>
-
+  <node name="$(arg namespace)" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers"
+    required="true" output="screen" args="$(arg usb_port) $(arg dxl_baud_rate)">
+    <param name="use_moveit"              value="$(arg use_moveit)"/>
+    <param name="use_joint_states_topic"  value="$(arg use_joint_state)"/>
+    <param name="use_cmd_vel_topic"       value="$(arg use_cmd_vel)"/>
+    <rosparam>
+      publish_period: 0.010
+      dxl_read_period: 0.010
+      dxl_write_period: 0.010
+      mobile_robot_config:                <!--this values will be set when 'use_cmd_vel' is true-->
+        seperation_between_wheels: 0.13  <!--default value is set by reference of TB3-->
+        radius_of_wheel: 0.035            <!--default value is set by reference of TB3-->
+    </rosparam>
+  </node>
+    
+  <!-- Copied from: usb_cam.launch -->
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
+    <param name="video_device" value="/dev/video2"/>
+    <param name="image_width" value="640"/>
+    <param name="image_height" value="480"/>
+    <param name="pixel_format" value="yuyv"/>
+    <param name="color_format" value="yuv422p"/>
+    <param name="camera_frame_id" value="usb_cam"/>
+    <param name="io_method" value="mmap"/>
+  </node>    
+  
 </launch>
