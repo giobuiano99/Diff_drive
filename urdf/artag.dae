@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 3.5.1 commit date:2023-04-24, commit time:18:11, hash:e1ccd9d4a1d3</authoring_tool>
     </contributor>
-    <created>2023-05-17T13:40:34</created>
-    <modified>2023-05-17T13:40:34</modified>
+    <created>2023-05-17T16:08:35</created>
+    <modified>2023-05-17T16:08:35</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -30,14 +30,14 @@
     </effect>
     <effect id="Materiale-effect">
       <profile_COMMON>
-        <newparam sid="marker26_5cm_jpg-surface">
+        <newparam sid="aruco-9_jpg-surface">
           <surface type="2D">
-            <init_from>marker26_5cm_jpg</init_from>
+            <init_from>aruco-9_jpg</init_from>
           </surface>
         </newparam>
-        <newparam sid="marker26_5cm_jpg-sampler">
+        <newparam sid="aruco-9_jpg-sampler">
           <sampler2D>
-            <source>marker26_5cm_jpg-surface</source>
+            <source>aruco-9_jpg-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -46,7 +46,7 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <diffuse>
-              <texture texture="marker26_5cm_jpg-sampler" texcoord="UVMap"/>
+              <texture texture="aruco-9_jpg-sampler" texcoord="UVMap"/>
             </diffuse>
             <index_of_refraction>
               <float sid="ior">1.45</float>
@@ -57,8 +57,8 @@
     </effect>
   </library_effects>
   <library_images>
-    <image id="marker26_5cm_jpg" name="marker26_5cm_jpg">
-      <init_from>marker26_5cm.jpg</init_from>
+    <image id="aruco-9_jpg" name="aruco-9_jpg">
+      <init_from>aruco-9.jpg</init_from>
     </image>
   </library_images>
   <library_materials>
