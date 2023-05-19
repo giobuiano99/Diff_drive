@@ -4,7 +4,7 @@
 #include "tf/transform_broadcaster.h"
 #include "tf/transform_listener.h"
 
-#define _freq 30
+#define _freq 5
 
 
 
@@ -20,19 +20,23 @@ class goal_gen {
 		tf::TransformBroadcaster _trans_br;
 		tf::TransformListener _listener;
 		tf::TransformListener _listener_goal;
+		tf::StampedTransform _transform;
 		ros::NodeHandle _nh;
+		ros::Publisher _goal_pub;
 		ros::Rate _rate;
 
 };
 
 goal_gen::goal_gen(): _rate(_freq) {
 	_disp = 0.1;
+	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
 	boost::thread(&goal_gen::loop, this);
 }
 
 
 
 void goal_gen::loop() {
+	geometry_msgs::PoseStamped nav_msg;
 
 	while (ros::ok()) {
 		
@@ -43,8 +47,20 @@ void goal_gen::loop() {
 			q.setRPY(0,1.57,-1.57);
 			_trans.setRotation(q);
 			_trans_br.sendTransform(tf::StampedTransform(_trans, ros::Time::now(), "aruco_marker_frame", "goal_frame"));
+			_listener.lookupTransform("goal_frame","map",ros::Time(0), _transform);
+			nav_msg.header.stamp = ros::Time::now();
+			nav_msg.header.frame_id = "map";
 
-		
+			nav_msg.pose.position.x = _transform.getOrigin().x();
+			nav_msg.pose.position.y = _transform.getOrigin().y();
+			nav_msg.pose.position.z = _transform.getOrigin().z();
+			nav_msg.pose.orientation.x = _transform.getRotation().x();
+			nav_msg.pose.orientation.y = _transform.getRotation().y();
+			nav_msg.pose.orientation.z = _transform.getRotation().z();
+			nav_msg.pose.orientation.w = _transform.getRotation().w();
+
+			_goal_pub.publish(nav_msg);
+
 		}
         catch (tf::TransformException ex){
             ROS_ERROR("%s",ex.what());
