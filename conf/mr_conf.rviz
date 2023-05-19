@@ -5,8 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1
-        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 413
   - Class: rviz/Selection
@@ -26,7 +24,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: Camera
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -66,16 +64,14 @@ Visualization Manager:
         camera_frame:
           Value: true
         camera_link:
+          Value: false
+        goal_frame:
           Value: true
         laser_frame:
-          Value: false
-        left_wheel_link:
           Value: false
         map:
           Value: false
         odom:
-          Value: false
-        right_wheel_link:
           Value: false
       Marker Alpha: 1
       Marker Scale: 0.20000000298023224
@@ -90,30 +86,56 @@ Visualization Manager:
               camera_link:
                 camera_frame:
                   aruco_marker_frame:
-                    {}
+                    goal_frame:
+                      {}
               laser_frame:
-                {}
-              left_wheel_link:
-                {}
-              right_wheel_link:
                 {}
       Update Interval: 0
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: false
+      Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        laser_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Class: rviz/Camera
       Enabled: false
@@ -205,7 +227,7 @@ Visualization Manager:
       Buffer Length: 1
       Class: rviz/Path
       Color: 25; 255; 0
-      Enabled: false
+      Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
@@ -224,7 +246,7 @@ Visualization Manager:
       Shaft Length: 0.10000000149011612
       Topic: /move_base/NavfnROS/plan
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
@@ -273,7 +295,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.37129881978034973
+      Distance: 3.56325626373291
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -281,17 +303,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.18441833555698395
-        Y: 0.7037400603294373
-        Z: 0.7917943596839905
+        X: -0.2822993993759155
+        Y: 0.6951262354850769
+        Z: 0.7417047023773193
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.729796290397644
+      Pitch: 0.6997964382171631
       Target Frame: <Fixed Frame>
-      Yaw: 1.685388445854187
+      Yaw: 1.6803884506225586
     Saved: ~
 Window Geometry:
   Camera:

@@ -17,9 +17,10 @@ class goal_gen {
 	private:
 		float _disp;
 		tf::Transform _trans;
+		tf::StampedTransform _check_trans;
+		tf::StampedTransform _prev_trans;
 		tf::TransformBroadcaster _trans_br;
 		tf::TransformListener _listener;
-		tf::TransformListener _listener_goal;
 		tf::StampedTransform _transform;
 		ros::NodeHandle _nh;
 		ros::Publisher _goal_pub;
@@ -28,7 +29,7 @@ class goal_gen {
 };
 
 goal_gen::goal_gen(): _rate(_freq) {
-	_disp = 0.1;
+	_disp = 0.3;
 	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
 	boost::thread(&goal_gen::loop, this);
 }
@@ -37,29 +38,49 @@ goal_gen::goal_gen(): _rate(_freq) {
 
 void goal_gen::loop() {
 	geometry_msgs::PoseStamped nav_msg;
+	bool Tf_equal = false;
+	bool first_check = true;
 
 	while (ros::ok()) {
 		
 		try{
             _listener.waitForTransform("aruco_marker_frame","camera_frame",ros::Time(0),ros::Duration(3.0));
-			_trans.setOrigin( tf::Vector3(0, 0, _disp) );
-			tf::Quaternion q;
-			q.setRPY(0,1.57,-1.57);
-			_trans.setRotation(q);
-			_trans_br.sendTransform(tf::StampedTransform(_trans, ros::Time::now(), "aruco_marker_frame", "goal_frame"));
-			_listener.lookupTransform("goal_frame","map",ros::Time(0), _transform);
+			_listener.lookupTransform("aruco_marker_frame","camera_frame",ros::Time(0), _check_trans);
+
+			// compare tfs to check if the marker is in the field of view
+			if (first_check) {
+				first_check = false;
+			} else {
+				if (_check_trans == _prev_trans) {
+					Tf_equal = true;
+				} else {
+					Tf_equal = false;
+				}
+			}
+
+			if (!Tf_equal) {
+				_trans.setOrigin( tf::Vector3(0, 0, _disp) );
+				tf::Quaternion q;
+				q.setRPY(0,1.57,-1.57);
+				_trans.setRotation(q);
+				_trans_br.sendTransform(tf::StampedTransform(_trans, ros::Time::now(), "aruco_marker_frame", "goal_frame"));
+				_listener.lookupTransform("goal_frame","map",ros::Time(0), _transform);
+				nav_msg.header.frame_id = "map";
+
+				nav_msg.pose.position.x = -_transform.getOrigin().x();
+				nav_msg.pose.position.y = -_transform.getOrigin().y();
+				nav_msg.pose.position.z = -_transform.getOrigin().z();
+				nav_msg.pose.orientation.x = -_transform.getRotation().x();
+				nav_msg.pose.orientation.y = -_transform.getRotation().y();
+				nav_msg.pose.orientation.z = -_transform.getRotation().z();
+				nav_msg.pose.orientation.w = _transform.getRotation().w();
+			}
+
 			nav_msg.header.stamp = ros::Time::now();
-			nav_msg.header.frame_id = "map";
-
-			nav_msg.pose.position.x = _transform.getOrigin().x();
-			nav_msg.pose.position.y = _transform.getOrigin().y();
-			nav_msg.pose.position.z = _transform.getOrigin().z();
-			nav_msg.pose.orientation.x = _transform.getRotation().x();
-			nav_msg.pose.orientation.y = _transform.getRotation().y();
-			nav_msg.pose.orientation.z = _transform.getRotation().z();
-			nav_msg.pose.orientation.w = _transform.getRotation().w();
-
 			_goal_pub.publish(nav_msg);
+
+			_prev_trans.setOrigin(_check_trans.getOrigin());
+			_prev_trans.setRotation(_check_trans.getRotation());
 
 		}
         catch (tf::TransformException ex){
