@@ -143,6 +143,7 @@ include_directories(
 
 add_executable(Joy_wrap src/Joy_wrap.cpp)
 add_executable(Odomhen src/odomhen.cpp)
+add_executable(Goal_publisher src/goal_publisher.cpp)
 
 
 
@@ -167,6 +168,11 @@ target_link_libraries(Joy_wrap
 target_link_libraries(Odomhen
    ${catkin_LIBRARIES}
 )
+target_link_libraries(Goal_publisher
+   ${catkin_LIBRARIES}
+)
+
+
 
 #############
 ## Install ##
