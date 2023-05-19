@@ -119,4 +119,7 @@
   
   <node pkg="tf" type="static_transform_publisher" name="new_camera_frame" args="0 0 0 -1.57 0 -1.57 camera_link camera_frame 10"/>
   
+  <!-- Added to launch Goal_publisher -->
+  <node name="Goal_publisher" pkg="kvaradrive" type="Goal_publisher"/>
+  
 </launch>

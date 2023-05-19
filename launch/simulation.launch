@@ -125,6 +125,9 @@
     <param name="marker_frame"       value="$(arg marker_frame)" />
     <param name="corner_refinement"  value="$(arg corner_refinement)" />
   </node>
+  
+  <!-- Added to launch Goal_publisher -->
+  <node name="Goal_publisher" pkg="kvaradrive" type="Goal_publisher"/>
 
 
 </launch>
