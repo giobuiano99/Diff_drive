@@ -17,6 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   urdf
   xacro
+  actionlib
+  move_base_msgs
 )
 
 ## System dependencies are found with CMake's conventions
