@@ -108,7 +108,7 @@
   
   <!-- Copied from: single.launch -->
   <arg name="markerId"        default="9"/>
-  <arg name="markerSize"      default="0.05"/>    <!-- in m -->
+  <arg name="markerSize"      default="0.1"/>    <!-- in m -->
   <arg name="eye"             default="camera"/>
   <arg name="marker_frame"    default="aruco_marker_frame"/>
   <arg name="ref_frame"       default="camera_frame"/>  <!-- leave empty and the pose will be published wrt param parent_name -->

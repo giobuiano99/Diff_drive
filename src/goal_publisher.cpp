@@ -1,12 +1,13 @@
 #include "ros/ros.h"
 #include "geometry_msgs/PoseStamped.h"
+#include <tf2/LinearMath/Quaternion.h>
 #include "boost/thread.hpp"
 #include "tf/transform_broadcaster.h"
 #include "tf/transform_listener.h"
 #include "move_base_msgs/MoveBaseAction.h"
 #include <actionlib/client/simple_action_client.h>
 
-#define _freq 5
+#define _freq 1
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 
@@ -45,6 +46,9 @@ void goal_gen::loop() {
 	move_base_msgs::MoveBaseGoal goal;
 	bool Tf_equal = false;
 	bool first_check = true;
+	double roll, pitch, yaw;
+	tf2::Quaternion quaternion;
+
 
 	while (ros::ok()) {
 		
@@ -73,26 +77,36 @@ void goal_gen::loop() {
 
 				goal.target_pose.header.frame_id="map";
 				goal.target_pose.header.stamp=ros::Time::now();
+				
 
-				goal.target_pose.pose.position.x = _transform.getOrigin().x();
-				goal.target_pose.pose.position.y = _transform.getOrigin().y();
-				goal.target_pose.pose.orientation.w = _transform.getRotation().w();
+				 goal.target_pose.pose.position.x =  _transform.getOrigin().x();
+				goal.target_pose.pose.position.y =  _transform.getOrigin().y();
+				
+				tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
+				m.getRPY(roll, pitch, yaw);
+				quaternion.setRPY(0,0,yaw-3.14);  // RPY to quaternion 
+				
+				goal.target_pose.pose.orientation.w = quaternion.w() ; 
 
 
 				/*nav_msg.header.frame_id = "goal_frame";
 				
-				nav_msg.pose.position.x = -_transform.getOrigin().x();
-				nav_msg.pose.position.y = -_transform.getOrigin().y();
-				nav_msg.pose.position.z = -_transform.getOrigin().z();
+				nav_msg.pose.position.x = _transform.getOrigin().x();
+				nav_msg.pose.position.y = _transform.getOrigin().y();
+				nav_msg.pose.position.z = _transform.getOrigin().z();
 				/*nav_msg.pose.position.x = _transform.getOrigin().z();
 				nav_msg.pose.position.y = _transform.getOrigin().x();
-				nav_msg.pose.position.z = _transform.getOrigin().y();*/
+				nav_msg.pose.position.z = _transform.getOrigin().y(); */
+				
+				/*tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
+				m.getRPY(roll, pitch, yaw);
+				quaternion.setRPY(0,0,yaw-3.14);  // RPY to quaternion 
 
 
-				/*nav_msg.pose.orientation.x =- _transform.getRotation().x();
-				nav_msg.pose.orientation.y =- _transform.getRotation().y();
-				nav_msg.pose.orientation.z = -_transform.getRotation().z();
-				nav_msg.pose.orientation.w = -_transform.getRotation().w();
+				nav_msg.pose.orientation.x = quaternion.x();
+				nav_msg.pose.orientation.y = quaternion.y();
+				nav_msg.pose.orientation.z = quaternion.z();
+				nav_msg.pose.orientation.w = quaternion.w();
 			       /*nav_msg.pose.orientation.x = 0;
 				nav_msg.pose.orientation.y = 0;
 				nav_msg.pose.orientation.z = 0;
