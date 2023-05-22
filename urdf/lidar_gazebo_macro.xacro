@@ -4,7 +4,7 @@
   
   
   <xacro:macro name="lidar_gazebo_sensor" params="parent" > 
-    <link name="laser_frame">
+    <link name="laser">
       <inertial>
           <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
         <mass value="0.1" />
@@ -30,11 +30,11 @@
 
     <joint name="laser_joint" type="fixed">
       <parent link="${parent}"/>
-      <child link="laser_frame"/>
+      <child link="laser"/>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.031"/>
     </joint>
 
-    <gazebo reference="laser_frame">
+    <gazebo reference="laser">
       <sensor type="ray" name="head_hokuyo_sensor">
         <pose>0 0 0.38 0 0 0</pose>
         <visualize>true</visualize>
@@ -65,7 +65,7 @@
         </ray>
         <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
             <topicName>/laser/scan</topicName>
-            <frameName>laser_frame</frameName>
+            <frameName>laser</frameName>
         </plugin>
       </sensor>
     </gazebo>
