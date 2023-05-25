@@ -6,7 +6,7 @@ raytrace_range: 3.0
 #robot_radius: 0.20  # distance a circular robot should be clear of the obstacle (kobuki: 0.18)
 robot_radius: 0.12 # ArloBot
 # footprint: [[x0, y0], [x1, y1], ... [xn, yn]]  # if the robot is not circular
-inflation_radius: 0.30  # max. distance from an obstacle at which costs are incurred for planning paths.
+inflation_radius: 0.12  # max. distance from an obstacle at which costs are incurred for planning paths.
 cost_scaling_factor: 5  # exponential rate at which the obstacle cost drops off (default: 10)
 
 # voxel map configuration; z-voxels 0 are filled by bumpers and 1 by laser scan (kinect)
