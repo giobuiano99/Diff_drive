@@ -67,13 +67,13 @@
     <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
   </node>
   
-  <!-- Added to launch joy_node -->  
+  <!-- Added to launch joy_node   
   <node name="joy_node" pkg="joy" type="joy_node" />
     
-  <!-- Added to launch Joy_wrap -->  
+   Added to launch Joy_wrap 
   <node name="Joy_wrap" pkg="kvaradrive" type="Joy_wrap">
     <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
-  </node>
+  </node> -->
     
   <!-- Added to launch Odomhen -->  
   <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
@@ -122,12 +122,22 @@
   <!-- Added to launch Goal_publisher -->
   <node name="Goal_publisher" pkg="kvaradrive" type="Goal_publisher"/>
   
+  <!-- Copied from: rplidar.launch -->
+  <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+    <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+    <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
+    <!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
+    <param name="frame_id"            type="string" value="laser"/>
+    <param name="inverted"            type="bool"   value="true"/>
+    <param name="angle_compensate"    type="bool"   value="true"/>
+  </node> 
+  
   <!-- Copied from: single.launch -->
   <arg name="markerId"        default="9"/>
   <arg name="markerSize"      default="0.05"/>    <!-- in m -->
   <arg name="eye"             default="usb_cam"/>
   <arg name="marker_frame"    default="aruco_marker_frame"/>
-  <arg name="ref_frame"       default="usb_cam"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+  <arg name="ref_frame"       default="camera_frame"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
   <arg name="corner_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
 
   <node pkg="aruco_ros" type="single" name="aruco_single">
@@ -140,16 +150,6 @@
     <param name="camera_frame"       value="camera_frame"/>
     <param name="marker_frame"       value="$(arg marker_frame)" />
     <param name="corner_refinement"  value="$(arg corner_refinement)" />
-  </node>
-  
-  <!-- Copied from: rplidar.launch -->
-  <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
-    <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
-    <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
-    <!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
-    <param name="frame_id"            type="string" value="laser"/>
-    <param name="inverted"            type="bool"   value="true"/>
-    <param name="angle_compensate"    type="bool"   value="true"/>
   </node>
   
 </launch>

@@ -35,7 +35,7 @@ class goal_gen {
 
 goal_gen::goal_gen(): _rate(_freq) {
 	_disp = 0.3;
-	_max_wander = 0.5;
+	_max_wander = 0.05;
 	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
 	srand(time(NULL));
 	boost::thread(&goal_gen::loop, this);
@@ -59,6 +59,7 @@ void goal_gen::loop() {
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
+				ROS_ERROR("MARKER SEEN");
 				_trans.setOrigin( tf::Vector3(0, 0, _disp) );
 				tf::Quaternion q;
 				q.setRPY(0,1.57,-1.57);
@@ -76,7 +77,7 @@ void goal_gen::loop() {
 
 				tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
 				m.getRPY(roll, pitch, yaw);
-				quaternion.setRPY(roll,pitch,yaw);  // RPY to quaternion 
+				quaternion.setRPY(0,0,yaw);  // RPY to quaternion 
 				
 				//DEBUG
 				//quaternion.setRPY(0,0,0.554); 
@@ -95,7 +96,7 @@ void goal_gen::loop() {
 				else {
 					ROS_INFO("The base failed to move forward 1 meter for some reason");
 				}*/
-				ROS_ERROR("MARKER SEEN"); //DEBUG
+				ROS_ERROR("SENT, DONE!"); //DEBUG
 			}
 			catch (tf::TransformException ex){
 				ROS_ERROR("%s",ex.what());
@@ -106,7 +107,7 @@ void goal_gen::loop() {
 				ROS_ERROR("WANDERING TRY");
 				_listener_goal.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(10.0));
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
-				float rand_dist = float(rand())/RAND_MAX*_max_wander;
+				float rand_dist = float(rand())/RAND_MAX*_max_wander + 0.05;
 				float rand_yaw = float(rand())/RAND_MAX*6.28;
 				ROS_ERROR("%f", rand_dist);
 				ROS_ERROR("%f", rand_yaw);
