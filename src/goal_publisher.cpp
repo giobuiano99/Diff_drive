@@ -7,7 +7,7 @@
 #include "move_base_msgs/MoveBaseAction.h"
 #include <actionlib/client/simple_action_client.h>
 
-#define _freq 0.1
+#define _freq 2
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 
@@ -55,7 +55,7 @@ void goal_gen::loop() {
 	bool sent = false;
 
 	while (!sent && ros::ok()) {
-		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(1.0));
+		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(1.3));
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
@@ -65,7 +65,7 @@ void goal_gen::loop() {
 				q.setRPY(0,1.57,-1.57);
 				_trans.setRotation(q);
 				_trans_br.sendTransform(tf::StampedTransform(_trans, ros::Time::now(), "aruco_marker_frame", "goal_frame"));
-				_listener_goal.waitForTransform("map", "goal_frame", ros::Time(0), ros::Duration(10.0));
+				_listener_goal.waitForTransform("map", "goal_frame", ros::Time(0), ros::Duration(0.5));
 				_listener_goal.lookupTransform("map","goal_frame",ros::Time(0), _transform);
 
 				goal.target_pose.header.frame_id="map";
@@ -105,7 +105,7 @@ void goal_gen::loop() {
 		} else {
 			try{
 				ROS_ERROR("WANDERING TRY");
-				_listener_goal.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(10.0));
+				_listener_goal.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(0.5));
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
 				float rand_dist = float(rand())/RAND_MAX*_max_wander + 0.05;
 				float rand_yaw = float(rand())/RAND_MAX*6.28;
@@ -137,7 +137,7 @@ void goal_gen::loop() {
 			}
 			catch (tf::TransformException ex){
 				ROS_ERROR("%s",ex.what());
-				ros::Duration(1.0).sleep();
+				ros::Duration(0.1).sleep();
 			}
 		}
 		_rate.sleep();
