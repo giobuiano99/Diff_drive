@@ -7,7 +7,7 @@
 #include "move_base_msgs/MoveBaseAction.h"
 #include <actionlib/client/simple_action_client.h>
 
-#define _freq 2
+#define _freq 0.2
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 
@@ -55,7 +55,7 @@ void goal_gen::loop() {
 	bool sent = false;
 
 	while (!sent && ros::ok()) {
-		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(1.3));
+		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(4.3));
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
