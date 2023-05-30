@@ -7,7 +7,7 @@
 #include "move_base_msgs/MoveBaseAction.h"
 #include <actionlib/client/simple_action_client.h>
 
-#define _freq 0.1
+#define _freq 0.2
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 
@@ -34,8 +34,8 @@ class goal_gen {
 };
 
 goal_gen::goal_gen(): _rate(_freq) {
-	_disp = 0.3;
-	_max_wander = 0.1	;
+	_disp = 0.1;
+	_max_wander = 0.2	;
 	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
 	srand(time(NULL));
 	boost::thread(&goal_gen::loop, this);
@@ -55,7 +55,7 @@ void goal_gen::loop() {
 	bool sent = false;
 
 	while (!sent && ros::ok()) {
-		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(9.3));
+		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(4.3));
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
@@ -65,7 +65,7 @@ void goal_gen::loop() {
 				q.setRPY(0,1.57,-1.57);
 				_trans.setRotation(q);
 				_trans_br.sendTransform(tf::StampedTransform(_trans, ros::Time::now(), "aruco_marker_frame", "goal_frame"));
-				_listener_goal.waitForTransform("map", "goal_frame", ros::Time(0), ros::Duration(0.5));
+				_listener_goal.waitForTransform("map", "goal_frame", ros::Time(0), ros::Duration(1.0));
 				_listener_goal.lookupTransform("map","goal_frame",ros::Time(0), _transform);
 
 				goal.target_pose.header.frame_id="map";
