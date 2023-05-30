@@ -7,7 +7,7 @@
 #include "move_base_msgs/MoveBaseAction.h"
 #include <actionlib/client/simple_action_client.h>
 
-#define _freq 0.2
+#define _freq 0.1
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 
@@ -35,7 +35,7 @@ class goal_gen {
 
 goal_gen::goal_gen(): _rate(_freq) {
 	_disp = 0.3;
-	_max_wander = 0.05;
+	_max_wander = 0.1	;
 	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
 	srand(time(NULL));
 	boost::thread(&goal_gen::loop, this);
@@ -55,7 +55,7 @@ void goal_gen::loop() {
 	bool sent = false;
 
 	while (!sent && ros::ok()) {
-		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(4.3));
+		bool marker_seen = _listener.waitForTransform("camera_frame", "aruco_marker_frame", ros::Time(0), ros::Duration(9.3));
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
@@ -89,13 +89,13 @@ void goal_gen::loop() {
 				ROS_INFO("sending goal");
 				ac.sendGoal(goal);
 				sent = true;
-				/*ac.waitForResult();
-				if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
-					ROS_INFO("Hooray, the base moved 1 meter forward");
-				}
-				else {
-					ROS_INFO("The base failed to move forward 1 meter for some reason");
-				}*/
+				// ac.waitForResult();
+				// if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+				//	ROS_ERROR("Hooray, the base moved 1 meter forward");
+				// }
+				// else {
+				//	ROS_ERROR("The base failed to move forward 1 meter for some reason");
+				// }
 				ROS_ERROR("SENT, DONE!"); //DEBUG
 			}
 			catch (tf::TransformException ex){
@@ -107,8 +107,8 @@ void goal_gen::loop() {
 				ROS_ERROR("WANDERING TRY");
 				_listener_goal.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(0.5));
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
-				float rand_dist = float(rand())/RAND_MAX*_max_wander + 0.05;
-				float rand_yaw = float(rand())/RAND_MAX*6.28;
+				float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
+				float rand_yaw = float(rand())/RAND_MAX*6.28 -3.14;
 				ROS_ERROR("%f", rand_dist);
 				ROS_ERROR("%f", rand_yaw);
 
@@ -140,6 +140,9 @@ void goal_gen::loop() {
 				ros::Duration(0.1).sleep();
 			}
 		}
+		// if(sent){
+		// 	ROS_ERROR(ac.getState());
+		// }
 		_rate.sleep();
 	}
 
