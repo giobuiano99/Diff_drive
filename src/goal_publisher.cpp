@@ -90,14 +90,14 @@ void goal_gen::loop() {
 				ac.waitForServer();
 				ac.sendGoal(goal);
 				sent = true;
-				// ac.waitForResult();
+				ac.waitForResult();
 				// if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
 				//	ROS_ERROR("Hooray, the base moved 1 meter forward");
 				// }
 				// else {
 				//	ROS_ERROR("The base failed to move forward 1 meter for some reason");
 				// }
-				ROS_ERROR("SENT, DONE!"); //DEBUG
+				// ROS_ERROR("SENT, DONE!"); //DEBUG
 			}
 			catch (tf::TransformException ex){
 				ROS_ERROR("%s",ex.what());
@@ -130,13 +130,13 @@ void goal_gen::loop() {
 
 				ac.waitForServer();
 				ac.sendGoal(goal);
-				/*ac.waitForResult();
-				if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
-					ROS_INFO("Hooray, the base moved 1 meter forward");
-				}
-				else {
-					ROS_INFO("The base failed to move forward 1 meter for some reason");
-				}*/
+				// ac.waitForResult();
+				// if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+				// 	ROS_INFO("Hooray, the base moved 1 meter forward");
+				// }
+				// else {
+				// 	ROS_INFO("The base failed to move forward 1 meter for some reason");
+				// }
 				ROS_ERROR("WANDERING"); //DEBUG
 			}
 			catch (tf::TransformException ex){
