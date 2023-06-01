@@ -87,6 +87,7 @@ void goal_gen::loop() {
 				goal.target_pose.pose.orientation.w = quaternion.w() ; 
 
 				ROS_INFO("sending goal");
+				ac.waitForServer();
 				ac.sendGoal(goal);
 				sent = true;
 				// ac.waitForResult();
@@ -107,10 +108,12 @@ void goal_gen::loop() {
 				ROS_ERROR("WANDERING TRY");
 				_listener_goal.waitForTransform("map", "base_link", ros::Time(0), ros::Duration(0.5));
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
+				tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
+				m.getRPY(roll, pitch, yaw);
 				float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
-				float rand_yaw = float(rand())/RAND_MAX*6.28 -3.14;
-				ROS_ERROR("%f", rand_dist);
-				ROS_ERROR("%f", rand_yaw);
+				float rand_yaw = float(rand())/RAND_MAX*3.14 - 1.57 + yaw;
+				//ROS_ERROR("%f", rand_dist);
+				//ROS_ERROR("%f", rand_yaw);
 
 				goal.target_pose.header.frame_id="map";
 				goal.target_pose.header.stamp=ros::Time::now();
@@ -125,6 +128,7 @@ void goal_gen::loop() {
 				goal.target_pose.pose.orientation.z = quaternion.z() ; 
 				goal.target_pose.pose.orientation.w = quaternion.w() ; 
 
+				ac.waitForServer();
 				ac.sendGoal(goal);
 				/*ac.waitForResult();
 				if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
