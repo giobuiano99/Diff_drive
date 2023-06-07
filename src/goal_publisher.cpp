@@ -21,22 +21,18 @@ class goal_gen {
 		float _disp;
 		float _max_wander;
 		tf::Transform _trans;
-		tf::StampedTransform _check_trans;
-		tf::StampedTransform _prev_trans;
 		tf::TransformBroadcaster _trans_br;
 		tf::TransformListener _listener;
 		tf::TransformListener _listener_goal;
 		tf::StampedTransform _transform;
 		ros::NodeHandle _nh;
-		ros::Publisher _goal_pub;
 		ros::Rate _rate;
 
 };
 
 goal_gen::goal_gen(): _rate(_freq) {
 	_disp = 0.1;
-	_max_wander = 0.2	;
-	_goal_pub = _nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
+	_max_wander = 0.1	;
 	srand(time(NULL));
 	boost::thread(&goal_gen::loop, this);
 }
@@ -44,11 +40,8 @@ goal_gen::goal_gen(): _rate(_freq) {
 
 
 void goal_gen::loop() {
-	//geometry_msgs::PoseStamped nav_msg;
 	MoveBaseClient ac ("move_base",true);
 	move_base_msgs::MoveBaseGoal goal;
-	bool Tf_equal = false;
-	bool first_check = true;
 	double roll, pitch, yaw;
 	tf2::Quaternion quaternion;
 
@@ -59,6 +52,7 @@ void goal_gen::loop() {
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
+				ac.clearGoal();
 				ROS_ERROR("MARKER SEEN");
 				_trans.setOrigin( tf::Vector3(0, 0, _disp) );
 				tf::Quaternion q;
@@ -110,8 +104,10 @@ void goal_gen::loop() {
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
 				tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
 				m.getRPY(roll, pitch, yaw);
-				float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
-				float rand_yaw = float(rand())/RAND_MAX*3.14 - 1.57 + yaw;
+				// float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
+				// float rand_yaw = float(rand())/RAND_MAX*3.14 - 1.57 + yaw;
+				float rand_dist = _max_wander;
+				float rand_yaw = yaw + 6.28/8;
 				//ROS_ERROR("%f", rand_dist);
 				//ROS_ERROR("%f", rand_yaw);
 
@@ -120,6 +116,8 @@ void goal_gen::loop() {
 
 				goal.target_pose.pose.position.x =  _transform.getOrigin().x() + rand_dist*cos(rand_yaw);
 				goal.target_pose.pose.position.y =  _transform.getOrigin().y() + rand_dist*sin(rand_yaw);
+				// goal.target_pose.pose.position.x =  _transform.getOrigin().x();
+				// goal.target_pose.pose.position.y =  _transform.getOrigin().y();
 
 				quaternion.setRPY(0,0,rand_yaw);
 

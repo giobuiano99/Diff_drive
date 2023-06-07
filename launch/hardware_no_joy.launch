@@ -54,12 +54,18 @@
     <remap from="scan" to="$(arg scan_topic)"/>
   
   </node>
+
+    <!-- Added to launch Odomhen -->  
+  <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
+    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
+  </node>
   
   <!-- Copied from: move_base.launch -->
   <arg name="odom_topic" default="odomhen"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns='local_costmap'/>
+    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns='global_costmap'/>
     <rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load"/>
     <rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load"/>
     <rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load"/>
@@ -75,10 +81,6 @@
     <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
   </node> -->
     
-  <!-- Added to launch Odomhen -->  
-  <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
-    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
-  </node>
     
   <!-- Copied from: dynamixel_controllers.launch -->
   <arg name="usb_port"                default="/dev/ttyUSB0"/>
@@ -108,7 +110,7 @@
     
   <!-- Copied from: usb_cam.launch -->
   <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
-    <param name="video_device" value="/dev/video2"/>
+    <param name="video_device" value="/dev/video0"/>
     <param name="image_width" value="640"/>
     <param name="image_height" value="480"/>
     <param name="pixel_format" value="yuyv"/>

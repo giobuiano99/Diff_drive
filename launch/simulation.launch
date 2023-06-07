@@ -36,7 +36,7 @@
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-    args="-urdf -model diff_wheeled_robot -param robot_description"/> 
+    args="-urdf -model diff_wheeled_robot -param robot_description"/>
 
   <param name="second_robot_description" command="$(find xacro)/xacro '$(find kvaradrive)/urdf/ar_mark.urdf'"/>
 
@@ -48,7 +48,7 @@
   <!-- Defining parameters for slam_gmapping node -->
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="base_link"/>
-    <param name="odom_frame" value="odom"/>
+    <param name="odom_frame" value="odomhen"/>
     <param name="map_update_interval" value="5.0"/>
     <param name="maxUrange" value="6.0"/>
     <param name="maxRange" value="8.0"/>
@@ -89,15 +89,22 @@
   
   </node>
   
+   <!-- Added to launch Odomhen -->
+  <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
+    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
+  </node> 
+  
   <!-- Copied from: move_base.launch -->
-  <arg name="odom_topic" default="odom" />
+  <arg name="odom_topic" default="odomhen" />
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns='local_costmap'/>
+    <rosparam file="$(find kvaradrive)/param/costmap_common_params.yaml" command="load" ns='global_costmap'/>
     <rosparam file="$(find kvaradrive)/param/local_costmap_params.yaml" command="load"/>
     <rosparam file="$(find kvaradrive)/param/global_costmap_params.yaml" command="load"/>
     <rosparam file="$(find kvaradrive)/param/dwa_local_planner_params.yaml" command="load"/>
     <rosparam file="$(find kvaradrive)/param/move_base_params.yaml" command="load"/>
+    <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
 
   </node>
   

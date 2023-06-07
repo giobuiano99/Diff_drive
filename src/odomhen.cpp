@@ -6,7 +6,7 @@
 #include "tf/transform_broadcaster.h"
 
 
-#define _freq 100
+#define _freq 1000
 
 
 using namespace std;

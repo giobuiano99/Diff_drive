@@ -293,10 +293,10 @@
       <broadcastTF>1</broadcastTF>
       <wheelTorque>30</wheelTorque>
       <wheelAcceleration>1.8</wheelAcceleration>
-      <commandTopic>cmd_vel</commandTopic>
+      <commandTopic>kvaraspace/cmd_vel</commandTopic>
       <odometryFrame>odom</odometryFrame> 
       <odometryTopic>odom</odometryTopic> 
-      <robotBaseFrame>base_link</robotBaseFrame>
+      <robotBaseFrame>base_link_gazebo</robotBaseFrame>
     </plugin>
   </gazebo> 
 
