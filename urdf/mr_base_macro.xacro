@@ -48,6 +48,9 @@
       </collision>       
     </link>
 
+    <link name="center_link">   
+    </link>
+
     <link name="left_wheel_link">
       <visual> 
         <geometry>
@@ -93,12 +96,17 @@
                izz="0.001" />
       </inertial>
     </link>
-
    
     <joint name="base_footprint_joint" type="fixed">
-      <parent link="base_footprint"/>
+      <parent link="base_link"/>
+      <child link="base_footprint"/>
+      <origin rpy="0 0 0" xyz="0.0 0.0 -0.059"/>
+    </joint>
+
+    <joint name="center_joint" type="fixed">
+      <parent link="center_link"/>
       <child link="base_link"/>
-      <origin rpy="0 0 0" xyz="0.0 0.0 0.059"/>
+      <origin rpy="0 0 0" xyz="-0.04025 0.0 0.0"/>
     </joint>
     
     <joint name="left_wheel_joint" type="continuous">
@@ -282,7 +290,7 @@
       <rosDebugLevel>Debug</rosDebugLevel>
       <publishWheelTF>false</publishWheelTF>
       <robotNamespace>/</robotNamespace>
-      <publishTf>1</publishTf>
+      <publishTf>0</publishTf>
       <publishWheelJointState>false</publishWheelJointState>
       <alwaysOn>true</alwaysOn>
       <updateRate>100.0</updateRate>
@@ -292,12 +300,12 @@
       <wheelDiameter>${2*wheel_radius}</wheelDiameter>
       <broadcastTF>1</broadcastTF>
       <wheelTorque>30</wheelTorque>
-      <wheelAcceleration>1.8</wheelAcceleration>
-      <commandTopic>kvaraspace/cmd_vel</commandTopic>
+      <wheelAcceleration>1.8</wheelAcceleration> 
+      <commandTopic>kvaraspace/cmd_vel</commandTopic> 
       <odometryFrame>odom</odometryFrame> 
       <odometryTopic>odom</odometryTopic> 
-      <robotBaseFrame>base_link_gazebo</robotBaseFrame>
-    </plugin>
+      <robotBaseFrame>base_link</robotBaseFrame> 
+    </plugin> 
   </gazebo> 
 
 

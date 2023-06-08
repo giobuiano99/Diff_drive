@@ -6,7 +6,7 @@
 #include "tf/transform_broadcaster.h"
 
 
-#define _freq 1000
+#define _freq 100
 
 
 using namespace std;
@@ -32,7 +32,7 @@ class ODOMHEN {
 };
 
 ODOMHEN::ODOMHEN(): _rate(_freq) {
-	_x = 0;
+	_x = 0.04025;
 	_y = 0;
 	_theta = 0;
 	_headingVel = 0;
@@ -55,8 +55,8 @@ float T = 1.0/(float)_freq;
 
 	while (ros::ok()) {
 
-		_x = _x + _headingVel* T* cos(_theta +0.5* _turningVel*T);
-		_y = _y + _headingVel* T* sin(_theta +0.5* _turningVel*T);
+		_x = _x + _headingVel*T*cos(_theta + 0.5*_turningVel*T);
+		_y = _y + _headingVel*T*sin(_theta + 0.5*_turningVel*T);
 		_theta = _theta + _turningVel*T;
 
 		_trans.setOrigin(tf::Vector3(_x, _y, 0));
@@ -64,7 +64,7 @@ float T = 1.0/(float)_freq;
 		q.setRPY(0, 0, _theta);
 		_trans.setRotation(q);
 
-		_trans_br.sendTransform(tf::StampedTransform(_trans,ros::Time::now(), "odomhen", "base_link"));
+		_trans_br.sendTransform(tf::StampedTransform(_trans,ros::Time::now(), "odomhen", "center_link"));
 
 		_rate.sleep();
 	}

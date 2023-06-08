@@ -52,7 +52,6 @@ void goal_gen::loop() {
 		ROS_ERROR("LOOKING FOR MARKER");
 		if (marker_seen) {
 			try{
-				ac.clearGoal();
 				ROS_ERROR("MARKER SEEN");
 				_trans.setOrigin( tf::Vector3(0, 0, _disp) );
 				tf::Quaternion q;
@@ -80,18 +79,19 @@ void goal_gen::loop() {
 				goal.target_pose.pose.orientation.z = quaternion.z() ; 
 				goal.target_pose.pose.orientation.w = quaternion.w() ; 
 
+				ac.cancelAllGoals();
 				ROS_INFO("sending goal");
 				ac.waitForServer();
 				ac.sendGoal(goal);
 				sent = true;
-				ac.waitForResult();
+				// ac.waitForResult();
 				// if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
 				//	ROS_ERROR("Hooray, the base moved 1 meter forward");
 				// }
 				// else {
 				//	ROS_ERROR("The base failed to move forward 1 meter for some reason");
 				// }
-				// ROS_ERROR("SENT, DONE!"); //DEBUG
+				ROS_ERROR("SENT, DONE!");
 			}
 			catch (tf::TransformException ex){
 				ROS_ERROR("%s",ex.what());
@@ -104,10 +104,10 @@ void goal_gen::loop() {
 				_listener_goal.lookupTransform("map","base_link",ros::Time(0), _transform);
 				tf::Matrix3x3 m( _transform.getRotation() ); // quaternion to RPY
 				m.getRPY(roll, pitch, yaw);
-				// float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
-				// float rand_yaw = float(rand())/RAND_MAX*3.14 - 1.57 + yaw;
-				float rand_dist = _max_wander;
-				float rand_yaw = yaw + 6.28/8;
+				float rand_dist = float(rand())/RAND_MAX*_max_wander + _max_wander;
+				float rand_yaw = float(rand())/RAND_MAX*6.28/8 - 3.14/8 + yaw;
+				// float rand_dist = _max_wander;
+				// float rand_yaw = yaw + 6.28/16;
 				//ROS_ERROR("%f", rand_dist);
 				//ROS_ERROR("%f", rand_yaw);
 

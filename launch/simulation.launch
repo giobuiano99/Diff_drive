@@ -11,7 +11,7 @@
   
   <!-- Copied from: spawn_kvaradrive.launch -->
     <!-- these are the arguments you can pass this launch file, for example paused:=true -->
-  <arg name="paused" default="false"/>
+  <arg name="paused" default="true"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
@@ -60,13 +60,13 @@
     <param name="lsigma" value="0.075"/>
     <param name="ogain" value="3.0"/>
     <param name="lskip" value="0"/>
-    <param name="minimumScore" value="100"/>
+    <param name="minimumScore" value="150"/>
     <param name="srr" value="0.01"/>
     <param name="srt" value="0.02"/>
     <param name="str" value="0.01"/>
     <param name="stt" value="0.02"/>
-    <param name="linearUpdate" value="0.5"/>
-    <param name="angularUpdate" value="0.436"/>
+    <param name="linearUpdate" value="0.5"/> <!--0.5-->
+    <param name="angularUpdate" value="0.785"/> <!--0.436-->
     <param name="temporalUpdate" value="-1.0"/>
     <param name="resampleThreshold" value="0.5"/>
     <param name="particles" value="80"/>
@@ -132,9 +132,8 @@
     <param name="marker_frame"       value="$(arg marker_frame)" />
     <param name="corner_refinement"  value="$(arg corner_refinement)" />
   </node>
-  
-  <!-- Added to launch Goal_publisher -->
+   
+  <!--Added to launch Goal_publisher -->
   <node name="Goal_publisher" pkg="kvaradrive" type="Goal_publisher"/>
-
 
 </launch>
