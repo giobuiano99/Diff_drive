@@ -177,7 +177,7 @@
     <joint name="laser_joint" type="fixed">
       <parent link="base_link"/>
       <child link="laser"/>
-      <origin rpy="0 0 ${M_PI}" xyz="0.0 0.0 0.155"/>
+      <origin rpy="0 ${M_PI} 0" xyz="0.0 0.0 0.155"/>
     </joint>
 
     <gazebo reference="laser">

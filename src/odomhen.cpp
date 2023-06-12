@@ -53,7 +53,7 @@ ODOMHEN::ODOMHEN(): _rate(_freq) {
 void ODOMHEN::cb(geometry_msgs::Twist::ConstPtr msg) {
 	_turningVel = msg->angular.z*_rescaleTurning;
 	_headingVel = msg->linear.x*_rescaleHeading;
-	ROS_ERROR("I heard: headingVel = %f, turningVel = %f", _headingVel, _turningVel);
+	ROS_INFO("I heard: headingVel = %f, turningVel = %f", _headingVel, _turningVel);
 }
 
 void ODOMHEN::odom() {

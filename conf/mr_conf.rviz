@@ -55,6 +55,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        aruco_marker_frame:
+          Value: true
         base_footprint:
           Value: false
         base_link:
@@ -63,14 +65,18 @@ Visualization Manager:
           Value: true
         camera_link:
           Value: false
+        center_link:
+          Value: true
+        goal_frame:
+          Value: true
         laser:
           Value: true
         left_wheel_link:
           Value: true
         map:
           Value: false
-        odom:
-          Value: false
+        odomhen:
+          Value: true
         right_wheel_link:
           Value: true
       Marker Alpha: 1
@@ -81,17 +87,22 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          odom:
-            base_link:
-              camera_link:
-                camera_frame:
+          odomhen:
+            center_link:
+              base_link:
+                base_footprint:
                   {}
-              laser:
-                {}
-              left_wheel_link:
-                {}
-              right_wheel_link:
-                {}
+                camera_link:
+                  camera_frame:
+                    aruco_marker_frame:
+                      goal_frame:
+                        {}
+                laser:
+                  {}
+                left_wheel_link:
+                  {}
+                right_wheel_link:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -118,6 +129,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        center_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         laser:
           Alpha: 1
           Show Axes: false
@@ -150,12 +165,12 @@ Visualization Manager:
       Unreliable: false
       Value: false
       Visibility:
-        "": true
         Grid: true
         LaserScan: true
         Map: true
         Path: true
         PointCloud2: true
+        Polygon: true
         RobotModel: true
         TF: true
         Value: true
@@ -254,22 +269,22 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /move_base/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/Polygon
       Color: 25; 255; 0
@@ -316,7 +331,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.56325626373291
+      Distance: 1.9587630033493042
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -324,9 +339,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.2822993993759155
-        Y: 0.6951262354850769
-        Z: 0.7417047023773193
+        X: 0.14210408926010132
+        Y: 0.811206579208374
+        Z: 0.6597920060157776
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -354,5 +369,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1366
-  X: 0
+  X: 66
   Y: 27
