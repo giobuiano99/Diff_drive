@@ -45,7 +45,7 @@ ODOMHEN::ODOMHEN(): _rate(_freq) {
 //Callback function: the input of the function is the data to read
 void ODOMHEN::cb(geometry_msgs::Twist::ConstPtr msg) {
 	_turningVel = msg->angular.z;
-	_headingVel = msg->linear.x;
+	_headingVel = msg->linear.x*0.25;
 	ROS_INFO("I heard: headingVel = %f, turningVel = %f", _headingVel, _turningVel);
 }
 

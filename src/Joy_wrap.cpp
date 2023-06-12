@@ -23,8 +23,8 @@ class JOY_WRAP {
 };
 
 JOY_WRAP::JOY_WRAP(): _rate(100) {
-	_rescaleValueHead = 0.1;
-	_rescaleValueTurn = 1.5;
+	_rescaleValueHead = 0.15;
+	_rescaleValueTurn = 0.8;
 	_headingVel = 0;
 	_turningVel = 0;
 	_topicActive = false;
