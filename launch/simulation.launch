@@ -92,6 +92,8 @@
    <!-- Added to launch Odomhen -->
   <node name="Odomhen" pkg="kvaradrive" type="Odomhen">
     <remap from="cmd_vel" to="kvaraspace/cmd_vel"/>
+    <param name="rescaleHeading" value="1"/>
+    <param name="rescaleTurning" value="1"/>
   </node> 
   
   <!-- Copied from: move_base.launch -->
