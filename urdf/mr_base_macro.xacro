@@ -162,14 +162,14 @@
           <mesh filename="package://kvaradrive/meshes/lidar.stl" scale="0.001 0.001 0.001 "/>
         </geometry>
         <material name="White"/>
-        <origin rpy="0 0 ${-M_PI_2}" xyz="0.0 0.0 -0.031"/>
+        <origin rpy="0 ${M_PI} ${M_PI_2}" xyz="0.0 0.0 0.031"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0 " />
         <geometry>
           <cylinder length="0.04" radius="0.037" />
         </geometry>
-        <origin rpy="0 0 0" xyz="0.0 0.0 -0.031"/>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.031"/>
       </collision> 
          
     </link>
