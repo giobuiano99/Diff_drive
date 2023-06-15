@@ -79,7 +79,7 @@ void goal_gen::loop() {
 				goal.target_pose.pose.orientation.z = quaternion.z() ; 
 				goal.target_pose.pose.orientation.w = quaternion.w() ; 
 
-				ac.cancelAllGoals();
+				//ac.cancelAllGoals();
 				ROS_INFO("sending goal");
 				ac.waitForServer();
 				ac.sendGoal(goal);
