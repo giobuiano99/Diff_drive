@@ -32,7 +32,7 @@ class goal_gen {
 
 goal_gen::goal_gen(): _rate(_freq) {
 	_disp = 0.25;
-	_max_wander = 0.2	;
+	_max_wander = 0.1	;
 	srand(time(NULL));
 	boost::thread(&goal_gen::loop, this);
 }
