@@ -85,7 +85,7 @@
     
     
   <!-- Copied from: dynamixel_controllers.launch -->
-  <arg name="usb_port"                default="/dev/ttyUSB0"/>
+  <arg name="usb_port"                default="/dev/ttyUSB1"/>
   <arg name="dxl_baud_rate"           default="1000000"/>
   <arg name="namespace"               default="kvaraspace"/>
 
@@ -128,7 +128,7 @@
   
   <!-- Copied from: rplidar.launch -->
   <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
-    <param name="serial_port"         type="string" value="/dev/ttyUSB1"/>
+    <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
     <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
     <!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
     <param name="frame_id"            type="string" value="laser"/>
